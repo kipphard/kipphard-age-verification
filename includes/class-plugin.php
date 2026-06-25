@@ -52,7 +52,12 @@ final class Plugin {
 		);
 
 		( new Gate() )->hooks();
-		( new Woocommerce() )->hooks();
+
+		// Pro-only: nur laden wenn die (premium) WooCommerce-Klasse im Build vorhanden ist.
+		// Der freie Build (öffentliches Repo / WP.org) enthält diese Datei nicht.
+		if ( class_exists( __NAMESPACE__ . '\\Woocommerce' ) ) {
+			( new Woocommerce() )->hooks();
+		}
 
 		if ( is_admin() ) {
 			( new Admin() )->hooks();
