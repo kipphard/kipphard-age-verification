@@ -27,7 +27,7 @@
     {
       "step": "writeFile",
       "path": "/wordpress/wp-content/mu-plugins/avf-demo-force.php",
-      "data": "<?php\n// Demo only: the plugin lets admins skip the gate, and Playground auto-logs-in as\n// admin \u2014 so force the gate on for everyone here via the avf_bypass_admin filter.\nadd_filter( 'avf_bypass_admin', '__return_false' );\n"
+      "data": "<?php\n// Demo only: the plugin lets admins skip the gate, and Playground auto-logs-in as\n// admin \u2014 so force the gate on for everyone here via the avf_bypass_admin filter.\nadd_filter( 'avf_bypass_admin', '__return_false' );\nadd_filter( 'age_verification_bypass_admin', '__return_false' );\n"
     },
     {
       "step": "writeFile",
