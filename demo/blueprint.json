@@ -9,13 +9,22 @@
       "step": "installPlugin",
       "pluginData": {
         "resource": "url",
-        "url": "https://github.com/kipphard/altersverifikation/releases/download/v0.1.0/altersverifikation-0.1.0.zip"
+        "url": "https://github.com/kipphard/age-verification/releases/download/v0.2.0/age-verification-0.2.0.zip"
       },
       "options": { "activate": true }
     },
     {
+      "step": "mkdir",
+      "path": "/wordpress/wp-content/mu-plugins"
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/avf-demo-force.php",
+      "data": "<?php\n// Demo only: the plugin lets admins skip the gate, and Playground auto-logs-in as\n// admin — so force the gate on for everyone here via the avf_bypass_admin filter.\nadd_filter( 'avf_bypass_admin', '__return_false' );\n"
+    },
+    {
       "step": "runPHP",
-      "code": "<?php require_once '/wordpress/wp-load.php';\n$s = get_option('avf_settings', array());\n$s['mode'] = 'confirm';\n$s['scope'] = 'site';\n$s['heading'] = 'Bist du mindestens 18 Jahre alt?';\n$s['message'] = 'Diese Website enthält Inhalte, die nur für Erwachsene bestimmt sind. Bitte bestätige dein Alter, um fortzufahren.';\n$s['confirm_label'] = 'Ja, ich bin über 18';\n$s['decline_label'] = 'Nein';\n$s['decline_message'] = 'Du musst mindestens 18 Jahre alt sein, um diese Seite zu besuchen.';\n$s['accent_color'] = '#f0834e';\n$s['overlay_color'] = '#0d0d0f';\nupdate_option('avf_settings', $s);\n"
+      "code": "<?php require_once '/wordpress/wp-load.php';\n$s = get_option('avf_settings', array());\n$s['mode'] = 'confirm';\n$s['scope'] = 'site';\n$s['heading'] = 'Are you at least 18 years old?';\n$s['message'] = 'This website contains content intended only for adults. Please confirm your age to continue.';\n$s['confirm_label'] = 'Yes, I am over 18';\n$s['decline_label'] = 'No';\n$s['decline_message'] = 'You must be at least 18 years old to visit this site.';\n$s['accent_color'] = '#f0834e';\n$s['overlay_color'] = '#0d0d0f';\nupdate_option('avf_settings', $s);\n"
     }
   ]
 }
