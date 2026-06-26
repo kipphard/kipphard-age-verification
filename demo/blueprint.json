@@ -9,7 +9,7 @@
       "step": "installPlugin",
       "pluginData": {
         "resource": "url",
-        "url": "https://github.com/kipphard/age-verification/releases/download/v0.2.0/age-verification-0.2.0.zip"
+        "url": "https://github.com/kipphard/age-verification/releases/download/v0.3.0/age-verification-0.3.0.zip"
       },
       "options": { "activate": true }
     },
@@ -24,7 +24,7 @@
     },
     {
       "step": "runPHP",
-      "code": "<?php require_once '/wordpress/wp-load.php';\n$s = get_option('avf_settings', array());\n$s['mode'] = 'confirm';\n$s['scope'] = 'site';\n$s['heading'] = 'Are you at least 18 years old?';\n$s['message'] = 'This website contains content intended only for adults. Please confirm your age to continue.';\n$s['confirm_label'] = 'Yes, I am over 18';\n$s['decline_label'] = 'No';\n$s['decline_message'] = 'You must be at least 18 years old to visit this site.';\n$s['accent_color'] = '#f0834e';\n$s['overlay_color'] = '#0d0d0f';\nupdate_option('avf_settings', $s);\n"
+      "code": "<?php require_once '/wordpress/wp-load.php';\n$s = get_option('avf_settings', array());\n$s['kip_style_enabled'] = true;\n$s['kip_preset'] = 'soft';\n$s['kip_accent'] = '#f0834e';\n$s['mode'] = 'confirm';\n$s['scope'] = 'site';\n$s['heading'] = 'Are you at least 18 years old?';\n$s['message'] = 'This website contains content intended only for adults. Please confirm your age to continue.';\n$s['confirm_label'] = 'Yes, I am over 18';\n$s['decline_label'] = 'No';\n$s['decline_message'] = 'You must be at least 18 years old to visit this site.';\n$s['accent_color'] = '#f0834e';\n$s['overlay_color'] = '#0d0d0f';\nupdate_option('avf_settings', $s);\n"
     }
   ]
 }
