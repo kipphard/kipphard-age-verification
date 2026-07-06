@@ -31,32 +31,42 @@ class Gate {
 			return;
 		}
 
+		// Shared kip-ui.css zuerst laden, damit die Tokens für gate.css verfügbar sind.
+		$has_kip = class_exists( '\Kipphard\Shared\Appearance' );
+		$deps     = array();
+		if ( $has_kip && is_readable( KIPPHARD_AGE_VERIFICATION_DIR . 'shared/kip-ui.css' ) ) {
+			$settings = (array) get_option( Helpers::OPT_SETTINGS, array() );
+			wp_enqueue_style( 'kip-ui', KIPPHARD_AGE_VERIFICATION_URL . 'shared/kip-ui.css', array(), KIPPHARD_AGE_VERIFICATION_VERSION );
+			wp_add_inline_style( 'kip-ui', \Kipphard\Shared\Appearance::css( $settings, '.kip-ui.kip-age-gate' ) );
+			$deps[] = 'kip-ui';
+		}
+
 		wp_enqueue_style(
-			'avf-gate',
-			AVF_URL . 'assets/gate.css',
-			array(),
-			AVF_VERSION
+			'kipphard-age-verification-gate',
+			KIPPHARD_AGE_VERIFICATION_URL . 'assets/gate.css',
+			$deps,
+			KIPPHARD_AGE_VERIFICATION_VERSION
 		);
 
 		wp_enqueue_script(
-			'avf-gate',
-			AVF_URL . 'assets/gate.js',
+			'kipphard-age-verification-gate',
+			KIPPHARD_AGE_VERIFICATION_URL . 'assets/gate.js',
 			array(),
-			AVF_VERSION,
+			KIPPHARD_AGE_VERIFICATION_VERSION,
 			true
 		);
 
 		// Nur nicht-personenbezogene Anzeigekonfiguration an den Browser übertragen.
 		wp_localize_script(
-			'avf-gate',
-			'avfData',
+			'kipphard-age-verification-gate',
+			'kipphardAgeVerificationData',
 			array(
 				'minAge'        => (int) Helpers::get( 'min_age' ),
 				'mode'          => Helpers::get( 'mode' ),
 				'rememberDays'  => (int) Helpers::get( 'remember_days' ),
 				'declineAction' => Helpers::get( 'decline_action' ),
 				'declineUrl'    => Helpers::get( 'decline_url' ),
-				'cookieName'    => 'avf_ok',
+				'cookieName'    => 'kipphard_age_verification_ok',
 			)
 		);
 	}
@@ -70,7 +80,7 @@ class Gate {
 			return;
 		}
 		// Overlay per CSS sichtbar; JS entfernt es nach Cookie-Prüfung.
-		echo '<style id="avf-critical">#avf-overlay{display:flex!important}</style>' . "\n";
+		echo '<style id="kipphard-age-verification-critical">#kipphard-age-verification-overlay{display:flex!important}</style>' . "\n";
 	}
 
 	/**
@@ -96,46 +106,55 @@ class Gate {
 		$overlay_color = $overlay_color ? $overlay_color : '#0d0d0f';
 		$accent_color  = $accent_color ? $accent_color : '#f0834e';
 
+		// Inline-Stil: overlay-Farbe + kip-Accenttoken aus plugin-eigenem accent_color.
 		$inline_style = sprintf(
-			'--avf-overlay-color:%s;--avf-accent-color:%s',
+			'--kipphard-age-verification-overlay-color:%s;--kipphard-age-verification-accent-color:%s;--kip-accent:%s',
 			esc_attr( $overlay_color ),
+			esc_attr( $accent_color ),
 			esc_attr( $accent_color )
 		);
+
+		$has_kip  = class_exists( '\Kipphard\Shared\Appearance' );
+		$settings = $has_kip ? (array) get_option( Helpers::OPT_SETTINGS, array() ) : array();
+		$styled   = $has_kip && \Kipphard\Shared\Appearance::is_enabled( $settings );
+		$kip_atts = $styled ? \Kipphard\Shared\Appearance::data_atts( $settings ) : '';
+		$wrap_cls = $styled ? 'kip-ui kip-age-gate' : '';
 		?>
-		<div id="avf-overlay" role="dialog" aria-modal="true" aria-labelledby="avf-heading"
-			style="<?php echo esc_attr( $inline_style ); ?>">
-			<div class="avf-card">
+		<div id="kipphard-age-verification-overlay" role="dialog" aria-modal="true" aria-labelledby="kipphard-age-verification-heading"
+			class="<?php echo esc_attr( $wrap_cls ); ?>"
+			style="<?php echo esc_attr( $inline_style ); ?>"<?php echo $kip_atts; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-escaped in Appearance::data_atts(). ?>>
+			<div class="kipphard-age-verification-card">
 
 				<?php if ( $logo_url ) : ?>
-					<img class="avf-logo" src="<?php echo esc_url( $logo_url ); ?>"
-						alt="<?php esc_attr_e( 'Logo', 'altersverifikation' ); ?>">
+					<img class="kipphard-age-verification-logo" src="<?php echo esc_url( $logo_url ); ?>"
+						alt="<?php esc_attr_e( 'Logo', 'kipphard-age-verification' ); ?>">
 				<?php endif; ?>
 
-				<h1 id="avf-heading" class="avf-heading"><?php echo esc_html( $heading ); ?></h1>
+				<h1 id="kipphard-age-verification-heading" class="kipphard-age-verification-heading"><?php echo esc_html( $heading ); ?></h1>
 
-				<div class="avf-message"><?php echo wp_kses_post( $message ); ?></div>
+				<div class="kipphard-age-verification-message"><?php echo wp_kses_post( $message ); ?></div>
 
 				<?php if ( 'dob' === $mode ) : ?>
-					<div class="avf-dob-wrap">
-						<label for="avf-day"><?php esc_html_e( 'Geburtstag', 'altersverifikation' ); ?></label>
-						<div class="avf-dob-fields">
-							<input type="number" id="avf-day" name="avf_day" placeholder="TT"
+					<div class="kipphard-age-verification-dob-wrap">
+						<label for="kipphard-age-verification-day"><?php esc_html_e( 'Date of birth', 'kipphard-age-verification' ); ?></label>
+						<div class="kipphard-age-verification-dob-fields">
+							<input type="number" id="kipphard-age-verification-day" name="kipphard_age_verification_day" placeholder="TT"
 								min="1" max="31" inputmode="numeric" autocomplete="bday-day"
-								aria-label="<?php esc_attr_e( 'Tag', 'altersverifikation' ); ?>">
-							<input type="number" id="avf-month" name="avf_month" placeholder="MM"
+								aria-label="<?php esc_attr_e( 'Day', 'kipphard-age-verification' ); ?>">
+							<input type="number" id="kipphard-age-verification-month" name="kipphard_age_verification_month" placeholder="MM"
 								min="1" max="12" inputmode="numeric" autocomplete="bday-month"
-								aria-label="<?php esc_attr_e( 'Monat', 'altersverifikation' ); ?>">
-							<input type="number" id="avf-year" name="avf_year"
+								aria-label="<?php esc_attr_e( 'Month', 'kipphard-age-verification' ); ?>">
+							<input type="number" id="kipphard-age-verification-year" name="kipphard_age_verification_year"
 								placeholder="<?php echo esc_attr( gmdate( 'Y' ) ); ?>"
 								min="1900" max="<?php echo esc_attr( gmdate( 'Y' ) ); ?>"
 								inputmode="numeric" autocomplete="bday-year"
-								aria-label="<?php esc_attr_e( 'Jahr', 'altersverifikation' ); ?>">
+								aria-label="<?php esc_attr_e( 'Year', 'kipphard-age-verification' ); ?>">
 						</div>
-						<p id="avf-dob-error" class="avf-error" aria-live="polite" style="display:none;">
+						<p id="kipphard-age-verification-dob-error" class="kipphard-age-verification-error" aria-live="polite" style="display:none;">
 							<?php
 							printf(
 								/* translators: %d: required minimum age */
-								esc_html__( 'Du musst mindestens %d Jahre alt sein, um diese Seite zu besuchen.', 'altersverifikation' ),
+								esc_html__( 'You must be at least %d years old to visit this page.', 'kipphard-age-verification' ),
 								$min_age
 							);
 							?>
@@ -143,23 +162,23 @@ class Gate {
 					</div>
 				<?php endif; ?>
 
-				<div class="avf-actions">
-					<button type="button" id="avf-confirm" class="avf-btn avf-btn-confirm">
+				<div class="kipphard-age-verification-actions">
+					<button type="button" id="kipphard-age-verification-confirm" class="kipphard-age-verification-btn kipphard-age-verification-btn-confirm kip-btn kip-btn--primary">
 						<?php echo esc_html( $confirm_label ); ?>
 					</button>
-					<button type="button" id="avf-decline" class="avf-btn avf-btn-decline">
+					<button type="button" id="kipphard-age-verification-decline" class="kipphard-age-verification-btn kipphard-age-verification-btn-decline kip-btn kip-btn--ghost">
 						<?php echo esc_html( $decline_label ); ?>
 					</button>
 				</div>
 
-				<div id="avf-decline-message" class="avf-decline-message" style="display:none;" aria-live="polite">
+				<div id="kipphard-age-verification-decline-message" class="kipphard-age-verification-decline-message" style="display:none;" aria-live="polite">
 					<?php echo wp_kses_post( $decline_message ); ?>
 				</div>
 
-				<?php if ( ! ( Helpers::is_pro() && ! $show_credit ) ) : ?>
-					<p class="avf-credit">
-						<a href="https://products.kipphard.com/altersverifikation" target="_blank" rel="noopener noreferrer">
-							<?php esc_html_e( 'Altersverifikation by Kipphard', 'altersverifikation' ); ?>
+				<?php if ( $show_credit ) : ?>
+					<p class="kipphard-age-verification-credit">
+						<a href="https://kipphard.com/products/altersverifikation" target="_blank" rel="noopener noreferrer">
+							<?php esc_html_e( 'Altersverifikation by Kipphard', 'kipphard-age-verification' ); ?>
 						</a>
 					</p>
 				<?php endif; ?>
@@ -185,8 +204,8 @@ class Gate {
 			return false;
 		}
 
-		// Admins nie gate-n.
-		if ( current_user_can( 'manage_options' ) ) {
+		// Never gate admins (unless a filter opts out).
+		if ( current_user_can( 'manage_options' ) && apply_filters( 'kipphard_age_verification_bypass_admin', true ) ) {
 			return false;
 		}
 
@@ -203,11 +222,11 @@ class Gate {
 		}
 
 		/**
-		 * Erlaubt es anderen Klassen (z. B. der Pro-WooCommerce-Klasse),
+		 * Erlaubt es anderen Klassen (z. B. der WooCommerce-Add-on-Klasse),
 		 * die Gate-Entscheidung zu überschreiben.
 		 *
 		 * @param bool $show Ob der Overlay angezeigt werden soll.
 		 */
-		return (bool) apply_filters( 'avf_should_gate', $show );
+		return (bool) apply_filters( 'kipphard_age_verification_should_gate', $show );
 	}
 }

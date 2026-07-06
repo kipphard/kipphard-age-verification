@@ -18,16 +18,7 @@ class Helpers {
 	const CAP = 'manage_options';
 
 	/** Option-Key für die gespeicherten Plugin-Einstellungen. */
-	const OPT_SETTINGS = 'avf_settings';
-
-	/**
-	 * Prüft ob die Pro-Lizenz aktiv ist.
-	 *
-	 * @return bool
-	 */
-	public static function is_pro() {
-		return (bool) apply_filters( 'avf_is_pro', defined( 'AVF_PRO' ) && AVF_PRO );
-	}
+	const OPT_SETTINGS = 'kipphard_age_verification_settings';
 
 	/**
 	 * Gibt die Standardwerte aller Einstellungen zurück.
@@ -35,20 +26,20 @@ class Helpers {
 	 * @return array<string,mixed>
 	 */
 	public static function defaults() {
-		return array(
+		$base = array(
 			// Allgemein.
 			'min_age'        => 18,
 			'mode'           => 'confirm',
 			'scope'          => 'site',
 			'pages'          => array(),
 			// Texte.
-			'heading'        => __( 'Altersverifikation', 'altersverifikation' ),
-			'message'        => __( 'Diese Website enthält altersbeschränkte Inhalte. Bitte bestätige, dass du das erforderliche Mindestalter erreicht hast.', 'altersverifikation' ),
-			'confirm_label'  => __( 'Ja, ich bin alt genug', 'altersverifikation' ),
-			'decline_label'  => __( 'Nein, ich bin zu jung', 'altersverifikation' ),
+			'heading'        => __( 'Altersverifikation', 'kipphard-age-verification' ),
+			'message'        => __( 'This website contains age-restricted content. Please confirm that you have reached the required minimum age.', 'kipphard-age-verification' ),
+			'confirm_label'  => __( 'Yes, I am old enough', 'kipphard-age-verification' ),
+			'decline_label'  => __( 'No, I am too young', 'kipphard-age-verification' ),
 			// Ablehnen.
 			'decline_action'  => 'message',
-			'decline_message' => __( 'Du musst das Mindestalter erreicht haben, um diese Seite zu besuchen.', 'altersverifikation' ),
+			'decline_message' => __( 'You must have reached the minimum age to visit this page.', 'kipphard-age-verification' ),
 			'decline_url'     => '',
 			// Funktionscookie.
 			'remember_days'  => 30,
@@ -57,11 +48,13 @@ class Helpers {
 			'accent_color'   => '#f0834e',
 			'logo_url'       => '',
 			'show_credit'    => true,
-			// Pro-Felder.
+			// WooCommerce-Add-on (nur im Premium-Build aktiv, siehe class-woocommerce.php).
 			'wc_categories'  => array(),
-			'geo_countries'  => array(),
-			'custom_css'     => '',
 		);
+		if ( class_exists( '\Kipphard\Shared\Appearance' ) ) {
+			$base = array_merge( $base, \Kipphard\Shared\Appearance::defaults() );
+		}
+		return $base;
 	}
 
 	/**
@@ -101,8 +94,8 @@ class Helpers {
 		// pages: entweder als Array (multiselect) oder als Rohtext (kommagetrennte IDs).
 		if ( isset( $raw['pages'] ) && is_array( $raw['pages'] ) ) {
 			$pages = $raw['pages'];
-		} elseif ( isset( $raw['avf_pages_raw'] ) && '' !== trim( $raw['avf_pages_raw'] ) ) {
-			$pages = explode( ',', $raw['avf_pages_raw'] );
+		} elseif ( isset( $raw['kipphard_age_verification_pages_raw'] ) && '' !== trim( $raw['kipphard_age_verification_pages_raw'] ) ) {
+			$pages = explode( ',', $raw['kipphard_age_verification_pages_raw'] );
 		} else {
 			$pages = array();
 		}
@@ -138,29 +131,13 @@ class Helpers {
 		// Boolesche Felder.
 		$clean['show_credit'] = ! empty( $raw['show_credit'] );
 
-		// Pro: WooCommerce-Produktkategorien.
+		// WooCommerce-Add-on: Produktkategorien (nur im Premium-Build wirksam).
 		$wc_cats = isset( $raw['wc_categories'] ) && is_array( $raw['wc_categories'] ) ? $raw['wc_categories'] : array();
 		$clean['wc_categories'] = array_map( 'absint', $wc_cats );
 
-		// Pro: Geo-Länder (2-stellige ISO-Codes, Großbuchstaben); als Array oder Rohtext.
-		if ( isset( $raw['geo_countries'] ) && is_array( $raw['geo_countries'] ) ) {
-			$geo = $raw['geo_countries'];
-		} elseif ( isset( $raw['avf_geo_raw'] ) && '' !== trim( $raw['avf_geo_raw'] ) ) {
-			$geo = explode( ',', $raw['avf_geo_raw'] );
-		} else {
-			$geo = array();
+		if ( class_exists( '\Kipphard\Shared\Appearance' ) ) {
+			$clean = array_merge( $clean, \Kipphard\Shared\Appearance::sanitize( $raw ) );
 		}
-		$clean['geo_countries'] = array_filter(
-			array_map(
-				static function ( $c ) {
-					return strtoupper( sanitize_text_field( wp_unslash( $c ) ) );
-				},
-				$geo
-			)
-		);
-
-		// Pro: Eigenes CSS.
-		$clean['custom_css'] = isset( $raw['custom_css'] ) ? wp_strip_all_tags( wp_unslash( $raw['custom_css'] ) ) : '';
 
 		return $clean;
 	}
@@ -173,7 +150,7 @@ class Helpers {
 	 */
 	public static function guard_post( $action, $field = '_wpnonce' ) {
 		if ( ! current_user_can( self::CAP ) ) {
-			wp_die( esc_html__( 'Keine Berechtigung.', 'altersverifikation' ), '', array( 'response' => 403 ) );
+			wp_die( esc_html__( 'Permission denied.', 'kipphard-age-verification' ), '', array( 'response' => 403 ) );
 		}
 		check_admin_referer( $action, $field );
 	}

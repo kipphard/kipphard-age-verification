@@ -1,172 +1,177 @@
 /*
  * Altersverifikation – Gate Overlay Styles
  * Overlay ist standardmäßig sichtbar (Fail-Safe); JS blendet ihn aus wenn Cookie vorhanden.
+ * Baut auf kip-ui-Tokens auf (var(--kip-…, fallback)), degradiert graceful wenn kip-ui fehlt.
  */
 
 /* CSS-Variablen werden per Inline-Style vom PHP-Renderer gesetzt. */
-#avf-overlay {
+#kipphard-age-verification-overlay {
 	display: none; /* Wird durch Inline-Critical-CSS auf flex gesetzt. */
 	position: fixed;
 	inset: 0;
 	z-index: 999999;
-	background-color: var( --avf-overlay-color, #0d0d0f );
+	background-color: var( --kipphard-age-verification-overlay-color, #0d0d0f );
 	align-items: center;
 	justify-content: center;
 	padding: 1rem;
 	box-sizing: border-box;
 }
 
-#avf-overlay.avf-hidden {
+#kipphard-age-verification-overlay.kipphard-age-verification-hidden {
 	display: none !important;
 }
 
-.avf-card {
-	background: #fff;
-	border-radius: 8px;
+.kipphard-age-verification-card {
+	background: var( --kip-surface, #fff );
+	border-radius: var( --kip-radius, 8px );
 	padding: 2rem 2.5rem;
 	max-width: 480px;
 	width: 100%;
 	text-align: center;
-	box-shadow: 0 8px 40px rgba( 0, 0, 0, 0.5 );
+	box-shadow: var( --kip-shadow-lg, 0 8px 40px rgba( 0, 0, 0, 0.5 ) );
 }
 
-.avf-logo {
+.kipphard-age-verification-logo {
 	max-width: 160px;
 	max-height: 80px;
 	margin-bottom: 1rem;
 	object-fit: contain;
 }
 
-.avf-heading {
+.kipphard-age-verification-heading {
 	margin: 0 0 0.75rem;
 	font-size: 1.5rem;
-	color: #111;
+	color: var( --kip-fg, #111 );
+	font-family: var( --kip-font, inherit );
 }
 
-.avf-message {
-	color: #444;
+.kipphard-age-verification-message {
+	color: var( --kip-muted, #444 );
 	margin-bottom: 1.5rem;
 	font-size: 0.95rem;
 	line-height: 1.6;
 }
 
 /* Geburtsdatumsfelder */
-.avf-dob-wrap {
+.kipphard-age-verification-dob-wrap {
 	margin-bottom: 1.25rem;
 	text-align: left;
 }
 
-.avf-dob-wrap label {
+.kipphard-age-verification-dob-wrap label {
 	display: block;
 	font-weight: 600;
 	margin-bottom: 0.4rem;
 	color: #333;
 }
 
-.avf-dob-fields {
+.kipphard-age-verification-dob-fields {
 	display: flex;
 	gap: 0.5rem;
 }
 
-.avf-dob-fields input[type="number"] {
+.kipphard-age-verification-dob-fields input[type="number"] {
 	width: 72px;
 	padding: 0.5rem;
-	border: 1px solid #ccc;
-	border-radius: 4px;
+	border: var( --kip-border-width, 1px ) solid var( --kip-border-strong, #ccc );
+	border-radius: var( --kip-radius-sm, 4px );
 	font-size: 1rem;
 	text-align: center;
 	-moz-appearance: textfield;
 }
 
-.avf-dob-fields input[type="number"]::-webkit-inner-spin-button,
-.avf-dob-fields input[type="number"]::-webkit-outer-spin-button {
+.kipphard-age-verification-dob-fields input[type="number"]::-webkit-inner-spin-button,
+.kipphard-age-verification-dob-fields input[type="number"]::-webkit-outer-spin-button {
 	-webkit-appearance: none;
 }
 
-.avf-error {
+.kipphard-age-verification-error {
 	color: #c00;
 	font-size: 0.875rem;
 	margin-top: 0.4rem;
 }
 
 /* Schaltflächen */
-.avf-actions {
+.kipphard-age-verification-actions {
 	display: flex;
 	flex-direction: column;
 	gap: 0.6rem;
 	margin-bottom: 1rem;
 }
 
-.avf-btn {
+/* kip-btn base: kipphard-age-verification-btn adds full-width block layout on top of kip-ui's inline-flex. */
+.kipphard-age-verification-btn {
 	display: block;
 	width: 100%;
 	padding: 0.75rem 1rem;
 	font-size: 1rem;
 	font-weight: 600;
-	border: none;
-	border-radius: 6px;
+	border-radius: var( --kip-radius-sm, 6px );
 	cursor: pointer;
-	transition: opacity 0.15s;
+	transition: opacity var( --kip-speed, 0.15s );
 }
 
-.avf-btn:hover {
+.kipphard-age-verification-btn:hover {
 	opacity: 0.85;
 }
 
-.avf-btn:focus-visible {
-	outline: 3px solid var( --avf-accent-color, #f0834e );
+.kipphard-age-verification-btn:focus-visible {
+	outline: 3px solid var( --kipphard-age-verification-accent-color, var( --kip-accent, #f0834e ) );
 	outline-offset: 2px;
 }
 
-.avf-btn-confirm {
-	background-color: var( --avf-accent-color, #f0834e );
-	color: #fff;
+/* Confirm: uses kip-btn--primary; fall back to kipphard-age-verification-accent-color if kip-ui is absent. */
+.kipphard-age-verification-btn-confirm {
+	background-color: var( --kipphard-age-verification-accent-color, var( --kip-accent, #f0834e ) );
+	color: var( --kip-on-accent, #fff );
+	border: none;
 }
 
-.avf-btn-decline {
+/* Decline: kip-btn--ghost styling with kipphard-age-verification-specific fallbacks. */
+.kipphard-age-verification-btn-decline {
 	background: transparent;
-	border: 2px solid #ccc;
-	color: #555;
+	border: 2px solid var( --kip-border-strong, #ccc );
+	color: var( --kip-muted, #555 );
 }
 
 /* Ablehnungs-Meldung */
-.avf-decline-message {
+.kipphard-age-verification-decline-message {
 	margin-top: 0.75rem;
 	padding: 0.75rem;
 	background: #fef2f2;
 	border: 1px solid #fca5a5;
-	border-radius: 4px;
+	border-radius: var( --kip-radius-sm, 4px );
 	color: #991b1b;
 	font-size: 0.875rem;
 }
 
 /* Credit */
-.avf-credit {
+.kipphard-age-verification-credit {
 	margin-top: 1.25rem;
 	font-size: 0.7rem;
 	color: #aaa;
 }
 
-.avf-credit a {
+.kipphard-age-verification-credit a {
 	color: #aaa;
 	text-decoration: none;
 }
 
-.avf-credit a:hover {
+.kipphard-age-verification-credit a:hover {
 	text-decoration: underline;
 }
 
 /* Responsiv */
 @media ( max-width: 480px ) {
-	.avf-card {
+	.kipphard-age-verification-card {
 		padding: 1.5rem 1.25rem;
 	}
 
-	.avf-heading {
+	.kipphard-age-verification-heading {
 		font-size: 1.25rem;
 	}
 
-	.avf-dob-fields input[type="number"] {
+	.kipphard-age-verification-dob-fields input[type="number"] {
 		width: 60px;
 	}
 }

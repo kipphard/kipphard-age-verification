@@ -4,8 +4,8 @@
 ( function () {
 	'use strict';
 
-	var scopeSelect = document.getElementById( 'avf-scope' );
-	var pagesRow    = document.getElementById( 'avf-pages-row' );
+	var scopeSelect = document.getElementById( 'kipphard-age-verification-scope' );
+	var pagesRow    = document.getElementById( 'kipphard-age-verification-pages-row' );
 
 	function togglePagesRow() {
 		if ( ! scopeSelect || ! pagesRow ) {

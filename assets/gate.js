@@ -1,4 +1,4 @@
-/* global avfData */
+/* global kipphardAgeVerificationData */
 /**
  * Altersverifikation – Gate-Logik (vanilla IIFE, kein Framework, kein Tracking).
  * Geburtsdatum wird ausschließlich client-seitig ausgewertet; keine Daten an den Server.
@@ -6,22 +6,22 @@
 ( function () {
 	'use strict';
 
-	var cfg = window.avfData || {};
-	var cookieName    = cfg.cookieName    || 'avf_ok';
+	var cfg = window.kipphardAgeVerificationData || {};
+	var cookieName    = cfg.cookieName    || 'kipphard_age_verification_ok';
 	var mode          = cfg.mode          || 'confirm';
 	var minAge        = parseInt( cfg.minAge, 10 ) || 18;
 	var rememberDays  = parseInt( cfg.rememberDays, 10 ) || 30;
 	var declineAction = cfg.declineAction || 'message';
 	var declineUrl    = cfg.declineUrl    || '';
 
-	var overlay      = document.getElementById( 'avf-overlay' );
-	var btnConfirm   = document.getElementById( 'avf-confirm' );
-	var btnDecline   = document.getElementById( 'avf-decline' );
-	var declineMsg   = document.getElementById( 'avf-decline-message' );
-	var dobError     = document.getElementById( 'avf-dob-error' );
-	var fieldDay     = document.getElementById( 'avf-day' );
-	var fieldMonth   = document.getElementById( 'avf-month' );
-	var fieldYear    = document.getElementById( 'avf-year' );
+	var overlay      = document.getElementById( 'kipphard-age-verification-overlay' );
+	var btnConfirm   = document.getElementById( 'kipphard-age-verification-confirm' );
+	var btnDecline   = document.getElementById( 'kipphard-age-verification-decline' );
+	var declineMsg   = document.getElementById( 'kipphard-age-verification-decline-message' );
+	var dobError     = document.getElementById( 'kipphard-age-verification-dob-error' );
+	var fieldDay     = document.getElementById( 'kipphard-age-verification-day' );
+	var fieldMonth   = document.getElementById( 'kipphard-age-verification-month' );
+	var fieldYear    = document.getElementById( 'kipphard-age-verification-year' );
 
 	if ( ! overlay ) {
 		return;
@@ -50,7 +50,7 @@
 	 * Overlay entfernen und Seite zugänglich machen.
 	 */
 	function removeOverlay() {
-		overlay.classList.add( 'avf-hidden' );
+		overlay.classList.add( 'kipphard-age-verification-hidden' );
 		overlay.setAttribute( 'aria-hidden', 'true' );
 	}
 

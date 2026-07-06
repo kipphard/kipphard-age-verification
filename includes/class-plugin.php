@@ -45,12 +45,7 @@ final class Plugin {
 	 * Laufzeit-Hooks registrieren.
 	 */
 	public function boot() {
-		load_plugin_textdomain(
-			'altersverifikation',
-			false,
-			dirname( plugin_basename( AVF_FILE ) ) . '/languages'
-		);
-
+		// Translations load automatically (WP 4.6+ just-in-time): WordPress.org language packs by slug + the bundled languages/age-verification-<locale>.mo.
 		( new Gate() )->hooks();
 
 		// Pro-only: nur laden wenn die (premium) WooCommerce-Klasse im Build vorhanden ist.

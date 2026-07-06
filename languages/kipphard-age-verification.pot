@@ -1,0 +1,276 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-26 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: includes/class-admin.php:31 includes/class-admin.php:32
+#: includes/class-helpers.php:45
+msgid "Altersverifikation"
+msgstr ""
+
+#: includes/class-admin.php:109
+msgid "Confirmation (Yes / No)"
+msgstr ""
+
+#: includes/class-admin.php:110
+msgid "Enter date of birth"
+msgstr ""
+
+#: includes/class-admin.php:113
+msgid "Entire website"
+msgstr ""
+
+#: includes/class-admin.php:114
+msgid "Specific pages only"
+msgstr ""
+
+#: includes/class-admin.php:117
+msgid "Show message"
+msgstr ""
+
+#: includes/class-admin.php:118
+msgid "Redirect to URL"
+msgstr ""
+
+#: includes/class-admin.php:122
+msgid "Altersverifikation – Settings"
+msgstr ""
+
+#: includes/class-admin.php:126
+msgid "Settings saved."
+msgstr ""
+
+#: includes/class-admin.php:134
+msgid "General"
+msgstr ""
+
+#: includes/class-admin.php:138
+msgid "Minimum age"
+msgstr ""
+
+#: includes/class-admin.php:143
+msgid "Required minimum age in years (e.g. 18)."
+msgstr ""
+
+#: includes/class-admin.php:148
+msgid "Verification mode"
+msgstr ""
+
+#: includes/class-admin.php:163
+msgid "Scope"
+msgstr ""
+
+#: includes/class-admin.php:178
+msgid "Pages (IDs)"
+msgstr ""
+
+#: includes/class-admin.php:183
+msgid "Comma-separated page IDs when the scope is set to \"Specific pages\"."
+msgstr ""
+
+#: includes/class-admin.php:188
+msgid "Text"
+msgstr ""
+
+#: includes/class-admin.php:192
+msgid "Heading"
+msgstr ""
+
+#: includes/class-admin.php:201
+msgid "Message"
+msgstr ""
+
+#: includes/class-admin.php:205
+msgid "Basic HTML allowed (e.g. <strong>, <a>)."
+msgstr ""
+
+#: includes/class-admin.php:210
+msgid "Confirm button"
+msgstr ""
+
+#: includes/class-admin.php:219
+msgid "Decline button"
+msgstr ""
+
+#: includes/class-admin.php:228
+msgid "Decline behaviour"
+msgstr ""
+
+#: includes/class-admin.php:232
+msgid "Action on decline"
+msgstr ""
+
+#: includes/class-admin.php:247
+msgid "Decline message"
+msgstr ""
+
+#: includes/class-admin.php:255
+msgid "Redirect URL"
+msgstr ""
+
+#: includes/class-admin.php:260
+msgid "Only relevant when \"Redirect to URL\" is selected."
+msgstr ""
+
+#: includes/class-admin.php:265
+msgid "Design"
+msgstr ""
+
+#: includes/class-admin.php:269
+msgid "Overlay background colour"
+msgstr ""
+
+#: includes/class-admin.php:278
+msgid "Accent colour (buttons)"
+msgstr ""
+
+#: includes/class-admin.php:287
+msgid "Logo URL"
+msgstr ""
+
+#: includes/class-admin.php:296
+msgid "Cookie"
+msgstr ""
+
+#: includes/class-admin.php:300
+msgid "Remember duration (days)"
+msgstr ""
+
+#: includes/class-admin.php:305
+msgid "How long the functional cookie stores the confirmation (1–3650 days)."
+msgstr ""
+
+#: includes/class-admin.php:316
+msgid "Save settings"
+msgstr ""
+
+#: includes/class-admin.php:330
+msgid "Pro settings"
+msgstr ""
+
+#: includes/class-admin.php:336
+msgid "WooCommerce product categories"
+msgstr ""
+
+#: includes/class-admin.php:347
+msgid "No product categories found."
+msgstr ""
+
+#: includes/class-admin.php:364
+msgid "Show gate only for products in these categories."
+msgstr ""
+
+#: includes/class-admin.php:371
+msgid "Geo countries (ISO)"
+msgstr ""
+
+#: includes/class-admin.php:376
+msgid "Comma-separated 2-letter ISO country codes (e.g. DE, AT, CH). Leave empty for all countries."
+msgstr ""
+
+#: includes/class-admin.php:382
+msgid "Branding notice"
+msgstr ""
+
+#: includes/class-admin.php:388
+msgid "Show \"Altersverifikation by Kipphard\" notice in overlay"
+msgstr ""
+
+#: includes/class-admin.php:390
+msgid "Disable to hide the branding (white-label)."
+msgstr ""
+
+#: includes/class-admin.php:396
+msgid "Custom CSS"
+msgstr ""
+
+#: includes/class-admin.php:400
+msgid "Custom CSS for customising the overlay."
+msgstr ""
+
+#: includes/class-admin.php:413
+msgid "Altersverifikation Pro"
+msgstr ""
+
+#: includes/class-admin.php:417
+msgid "WooCommerce: enable gate for specific product categories only"
+msgstr ""
+
+#: includes/class-admin.php:421
+msgid "Geo-targeting: gate for visitors from specific countries only"
+msgstr ""
+
+#: includes/class-admin.php:425
+msgid "White-label: hide Kipphard branding in the overlay"
+msgstr ""
+
+#: includes/class-admin.php:429
+msgid "Custom CSS for full design control"
+msgstr ""
+
+#: includes/class-admin.php:434
+msgid "Upgrade now"
+msgstr ""
+
+#: includes/class-gate.php:111
+msgid "Logo"
+msgstr ""
+
+#: includes/class-gate.php:120
+msgid "Date of birth"
+msgstr ""
+
+#: includes/class-gate.php:124
+msgid "Day"
+msgstr ""
+
+#: includes/class-gate.php:127
+msgid "Month"
+msgstr ""
+
+#: includes/class-gate.php:132
+msgid "Year"
+msgstr ""
+
+#: includes/class-gate.php:138
+#, php-format
+msgid "You must be at least %d years old to visit this page."
+msgstr ""
+
+#: includes/class-gate.php:162
+msgid "Altersverifikation by Kipphard"
+msgstr ""
+
+#: includes/class-helpers.php:46
+msgid "This website contains age-restricted content. Please confirm that you have reached the required minimum age."
+msgstr ""
+
+#: includes/class-helpers.php:47
+msgid "Yes, I am old enough"
+msgstr ""
+
+#: includes/class-helpers.php:48
+msgid "No, I am too young"
+msgstr ""
+
+#: includes/class-helpers.php:51
+msgid "You must have reached the minimum age to visit this page."
+msgstr ""
+
+#: includes/class-helpers.php:176
+msgid "Permission denied."
+msgstr ""

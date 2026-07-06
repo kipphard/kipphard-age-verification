@@ -14,7 +14,7 @@
       "step": "installPlugin",
       "pluginData": {
         "resource": "url",
-        "url": "https://github.com/kipphard/age-verification/releases/download/v0.3.1/age-verification-0.3.1.zip"
+        "url": "https://github.com/kipphard/kipphard-age-verification/releases/download/v0.4.0/kipphard-age-verification-0.4.0.zip"
       },
       "options": {
         "activate": true
@@ -27,19 +27,19 @@
     {
       "step": "writeFile",
       "path": "/wordpress/wp-content/mu-plugins/avf-demo-force.php",
-      "data": "<?php\n// Demo only: the plugin lets admins skip the gate, and Playground auto-logs-in as\n// admin \u2014 so force the gate on for everyone here via the avf_bypass_admin filter.\nadd_filter( 'avf_bypass_admin', '__return_false' );\nadd_filter( 'age_verification_bypass_admin', '__return_false' );\n"
+      "data": "<?php\n// Demo only: the plugin lets admins skip the gate, and Playground auto-logs-in as\n// admin \u2014 so force the gate on for everyone here via the kipphard_kipphard_age_verification_bypass_admin filter.\nadd_filter( 'kipphard_kipphard_age_verification_bypass_admin', '__return_false' );\nadd_filter( 'kipphard_age_verification_bypass_admin', '__return_false' );\n"
     },
     {
       "step": "writeFile",
       "path": "/wordpress/wp-content/mu-plugins/kip-demo-panel.php",
       "data": {
         "resource": "url",
-        "url": "https://raw.githubusercontent.com/kipphard/age-verification/main/demo/kip-demo-panel.php"
+        "url": "https://raw.githubusercontent.com/kipphard/kipphard-age-verification/main/demo/kip-demo-panel.php"
       }
     },
     {
       "step": "runPHP",
-      "code": "<?php require_once '/wordpress/wp-load.php';\n$s = get_option('avf_settings', array());\n$s['kip_style_enabled'] = true;\n$s['kip_preset'] = 'soft';\n$s['kip_accent'] = '#f0834e';\n$s['mode'] = 'confirm';\n$s['scope'] = 'site';\n$s['heading'] = 'Are you at least 18 years old?';\n$s['message'] = 'This website contains content intended only for adults. Please confirm your age to continue.';\n$s['confirm_label'] = 'Yes, I am over 18';\n$s['decline_label'] = 'No';\n$s['decline_message'] = 'You must be at least 18 years old to visit this site.';\n$s['accent_color'] = '#f0834e';\n$s['overlay_color'] = '#0d0d0f';\nupdate_option('avf_settings', $s);\nupdate_option('kip_demo_panel_config', array('option' => 'avf_settings', 'toggles' => array(array('label' => 'Age check', 'key' => 'mode', 'options' => array(array('val' => 'confirm', 'label' => 'Confirm'), array('val' => 'dob', 'label' => 'Date of birth'))))));\n"
+      "code": "<?php require_once '/wordpress/wp-load.php';\n$s = get_option('kipphard_age_verification_settings', array());\n$s['kip_style_enabled'] = true;\n$s['kip_preset'] = 'soft';\n$s['kip_accent'] = '#f0834e';\n$s['mode'] = 'confirm';\n$s['scope'] = 'site';\n$s['heading'] = 'Are you at least 18 years old?';\n$s['message'] = 'This website contains content intended only for adults. Please confirm your age to continue.';\n$s['confirm_label'] = 'Yes, I am over 18';\n$s['decline_label'] = 'No';\n$s['decline_message'] = 'You must be at least 18 years old to visit this site.';\n$s['accent_color'] = '#f0834e';\n$s['overlay_color'] = '#0d0d0f';\nupdate_option('kipphard_age_verification_settings', $s);\nupdate_option('kip_demo_panel_config', array('option' => 'kipphard_age_verification_settings', 'toggles' => array(array('label' => 'Age check', 'key' => 'mode', 'options' => array(array('val' => 'confirm', 'label' => 'Confirm'), array('val' => 'dob', 'label' => 'Date of birth'))))));\n"
     }
   ]
 }
